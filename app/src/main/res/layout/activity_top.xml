@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Top">
 
-    <EditText
-        android:id="@+id/URLName"
-        android:layout_width="367dp"
-        android:layout_height="73dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/Title01"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
-
     <TextView
         android:id="@+id/Title01"
         android:layout_width="wrap_content"
@@ -28,13 +18,33 @@
         android:id="@+id/DownLoadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/URLName"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="92dp"
+        android:onClick="onClick"
         android:text="ダウンロード開始" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="345dp"
+        android:layout_height="351dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/DownLoadButton" />
+
+    <EditText
+        android:id="@+id/UrlCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/Title01"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
 </RelativeLayout>
