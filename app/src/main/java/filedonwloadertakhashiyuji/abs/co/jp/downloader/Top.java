@@ -31,10 +31,10 @@ public class Top extends AppCompatActivity {
     }
     public void onClick(View v) {
         EditText text =findViewById(R.id.editText3);
-        ImageView image=findViewById(R.id.DownloadImage);
+        ImageView image=findViewById(R.id.imageView);
         if(text.toString()==REQUEST_CODE){
-            Toast.makeText(this, "Toast example", Toast.LENGTH_LONG).show();
-            image.setImageResource(R.drawable.main);
         }
-      }
+        Toast.makeText(this, "Toast example", Toast.LENGTH_LONG).show();
+
+    }
     }
