@@ -46,20 +46,17 @@ public class Top extends AppCompatActivity {
         }
     }
     public void onClick(View v) throws FileNotFoundException {
-        EditText text =findViewById(R.id.editText3);
+        EditText text =findViewById(R.id.DownloadText);
         ImageView image=findViewById(R.id.DownloadImage);
         Editable textWord = text.getText();
         if(textWord.length()==75){
             Toast.makeText(this, "成功しました", Toast.LENGTH_LONG).show();
             image.setImageResource(R.drawable.main);
-            // 外部ストレージのパスに画像を保存
-            ContentValues contentValues = new ContentValues();
-            ContentResolver contentResolver = Top.this.getContentResolver();
-            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            contentValues.put("_data", fileName);
-            contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    contentValues);}
-        else
+
+        }
+        else{
             Toast.makeText(this,"失敗しました", Toast.LENGTH_LONG).show();
+            image.clearColorFilter();
+            }
     }
-    }
+}
