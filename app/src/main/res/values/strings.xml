@@ -1,6 +1,3 @@
 <resources>
-    <string name="app_name">TestHttpURLConnectionGet</string>
-    <string name="hint">input a image url</string>
-    <string name="download">download</string>
-    <string name="description">image</string>
+    <string name="app_name">DownLoader</string>
 </resources>
