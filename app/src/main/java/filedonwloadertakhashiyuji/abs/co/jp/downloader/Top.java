@@ -10,53 +10,64 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Map;
 
 import android.widget.Toast;
 
-public class Top extends AppCompatActivity {
+public class Top  extends AppCompatActivity {
 
-    private static final String REQUEST_CODE = "http://xn--eckyfna8731bop8c.jp/wp-content/uploads/2014/12/wpid-607566c4.png";
+    private ImageView imageView;
+    private EditText etitText;
+    private DownloadTask task;
 
-    // asset の画像ファイル名
-    private String fileName = "main.png";
+    String param0;
 
-    private String filePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top);
-        // 画像を置く外部ストレージのパスを設定
-        filePath = Environment.getExternalStorageDirectory().getPath()
-                + "/DCIM/Camera/"+fileName;
 
+        etitText = findViewById(R.id.DownloadText);
+        imageView = findViewById(R.id.DownloadImage);
 
+        Button downloadButton = findViewById(R.id.DownLoadButton);
     }
-    public void callback(final int responseCode, final int requestCode,
-                         final Map<String, Object> resultMap) {
-
-        if (REQUEST_CODE.equals(requestCode)) {
-           // dialog.dismess();
+    public void onClick(View v) {
+        param0 = etitText.getText().toString();
+        if(param0.length() != 0){
+            // ボタンをタップして非同期処理を開始
+            task = new DownloadTask();
+             // Listenerを設定
+            task.setListener(createListener());
+            task.execute(param0);
         }
+        if(param0.length()>=30)
+        Toast.makeText(this,"成功しました", Toast.LENGTH_LONG).show();
+        else
+        Toast.makeText(this,"失敗しました",Toast.LENGTH_LONG).show();
     }
-    public void onClick(View v) throws FileNotFoundException {
-        EditText text =findViewById(R.id.DownloadText);
-        ImageView image=findViewById(R.id.DownloadImage);
-        Editable textWord = text.getText();
-        if(textWord.length()==75){
-            Toast.makeText(this, "成功しました", Toast.LENGTH_LONG).show();
-            image.setImageResource(R.drawable.main);
 
-        }
-        else{
-            Toast.makeText(this,"失敗しました", Toast.LENGTH_LONG).show();
-            image.clearColorFilter();
+
+    @Override
+    protected void onDestroy() {
+        task.setListener(null);
+        super.onDestroy();
+    }
+
+    private DownloadTask.Listener createListener() {
+        return new DownloadTask.Listener() {
+            @Override
+            public void onSuccess(Bitmap bmp) {
+                imageView.setImageBitmap(bmp);
             }
+        };
     }
 }

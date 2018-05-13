@@ -46,5 +46,6 @@
         android:layout_below="@+id/Title01"
         android:ems="10"
         android:inputType="textPersonName"
+        android:onClick="onClick"
         android:text="Name" />
 </RelativeLayout>
