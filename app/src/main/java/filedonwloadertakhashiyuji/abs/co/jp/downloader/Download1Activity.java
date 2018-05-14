@@ -40,7 +40,7 @@ public class Download1Activity extends Activity
     protected void findViews(){
         urlEditText = (EditText)findViewById(R.id.urlEditText);
         startButton = (Button)findViewById(R.id.startButton);
-        progressTextView = (TextView)findViewById(R.id.progressTextView);
+        //progressTextView = (TextView)findViewById(R.id.progressTextView);
         imageView = (ImageView)findViewById(R.id.imageView1);
     }
 

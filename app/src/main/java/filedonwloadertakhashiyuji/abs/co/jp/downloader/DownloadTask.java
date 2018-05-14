@@ -14,8 +14,7 @@ import java.net.URL;
 public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
     private Listener listener;
-    public Boolean Succes;
-
+    public  Bitmap bmp;
     // 非同期処理
     @Override
     protected Bitmap doInBackground(String... params) {
@@ -33,16 +32,13 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap bmp) {
         if (listener != null) {
             listener.onSuccess(bmp);
-        Succes = true;
-        return;
         }
-        Succes = false;
     }
 
 
 
     private Bitmap downloadImage(String address) {
-        Bitmap bmp = null;
+         bmp = null;
 
         final StringBuilder result = new StringBuilder();
 
@@ -74,7 +70,6 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
 
             switch (resp){
                 case HttpURLConnection.HTTP_OK:
-                   Succes = true;
                     InputStream is = null;
                     try{
                         is = urlConnection.getInputStream();
@@ -89,7 +84,6 @@ public class DownloadTask extends AsyncTask<String, Void, Bitmap> {
                     }
                     break;
                 case HttpURLConnection.HTTP_UNAUTHORIZED:
-                    Succes = false;
                     break;
                 default:
                     break;
