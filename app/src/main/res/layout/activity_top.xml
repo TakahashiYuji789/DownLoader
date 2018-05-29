@@ -6,46 +6,78 @@
     android:layout_height="match_parent"
     tools:context=".Top">
 
+
     <TextView
         android:id="@+id/Title01"
-        android:layout_width="wrap_content"
+        android:layout_width="109dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="URLを記入して下さい"
-        android:textSize="18sp" />
+        android:layout_alignBaseline="@+id/toggleButton"
+        android:layout_alignParentStart="true"
+        android:text="URLの入力"
+        android:textSize="20sp" />
 
     <Button
-        android:id="@+id/DownLoadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/startButton"
+        android:layout_width="130dp"
+        android:layout_height="65dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="92dp"
         android:onClick="onClick"
-        android:text="ダウンロード開始" />
+        android:text="画像を選択"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/startButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="72dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/toggleButton"
+        android:onClick="onClick"
+        android:text="ダウンロード開始"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/ViewImageButton"
+        android:layout_width="126dp"
+        android:layout_height="72dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/urlEditText"
+        android:onClick="onClick"
+        android:text="画像を描画"
+        android:textSize="20sp" />
 
     <ImageView
-        android:id="@+id/DownloadImage"
+        android:id="@+id/ImageViewer"
         android:layout_width="match_parent"
-        android:layout_height="351dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/DownLoadButton" />
-
-    <EditText
-        android:id="@+id/UrlCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="310dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="49dp" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="127dp"
+        android:layout_height="65dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:textOff="外部読み込み" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton2"
+        android:layout_width="127dp"
+        android:layout_height="65dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textOff="新規保存" />
 
     <EditText
-        android:id="@+id/DownloadText"
-        android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:id="@+id/editText"
+        android:layout_width="254dp"
+        android:layout_height="61dp"
+        android:layout_alignBaseline="@+id/startButton2"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/Title01"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:onClick="onClick"
-        android:text="Name" />
+        android:hint="画像名を登録してください"
+        android:inputType="textPersonName" />
+
 </RelativeLayout>

@@ -3,4 +3,16 @@
     <string name="hint">input a image url</string>
     <string name="download">download</string>
     <string name="description">image</string>
+    <string name="save">Button Save</string>
+    <string name="read">Button Read</string>
+    <string name="saved">image saved</string>
+    <string name="error">error: FileOutputStream </string>
+    <string-array name="items">
+        <item>item1</item>
+        <item>item2</item>
+        <item>item3</item>
+        <item>item4</item>
+        <item>item5</item>
+    </string-array>
+
 </resources>

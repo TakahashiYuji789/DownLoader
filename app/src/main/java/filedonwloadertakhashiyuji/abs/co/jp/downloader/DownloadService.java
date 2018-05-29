@@ -1,6 +1,7 @@
 package filedonwloadertakhashiyuji.abs.co.jp.downloader;
 
-import java.io.BufferedOutputStream;
+import android.os.AsyncTask;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
@@ -8,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 
 import android.app.IntentService;
@@ -17,113 +17,60 @@ import android.content.*;
 import android.os.Bundle;
 import android.util.Log;
 
-public class DownloadService extends IntentService {
-
-    static final String TAG = "Download1";
-
-    public DownloadService() {
-        super(TAG);
-    }
+public class DownloadService extends AsyncTask<URL, Void, Boolean> {
 
     @Override
-    protected void onHandleIntent(Intent intent) {
-
+    protected Boolean doInBackground(URL[] urls) {
+        HttpURLConnection con = null;
         try {
+            // アクセス先URL
+            String[] values = new String[0];
+            final URL url = new URL(values[0]);
+            // 出力ファイルフルパス
+            final String filePath = "内部ストレージ/Takahashi_Folder";
 
-            Bundle bundle = intent.getExtras();
-            if(bundle == null){
-                Log.d(TAG, "bundle == null");
-                return;
-            }
-            String urlString = bundle.getString("url");
+            // ローカル処理
+            // コネクション取得
+            con = (HttpURLConnection) url.openConnection();
+            con.connect();
 
-            // HTTP Connection
+            // HTTPレスポンスコード
+            final int status = con.getResponseCode();
+            if (status == HttpURLConnection.HTTP_OK) {
+                // 通信に成功した
+                // ファイルのダウンロード処理を実行
+                // 読み込み用ストリーム
+                final InputStream input = con.getInputStream();
+                final DataInputStream dataInput = new DataInputStream(input);
+                // 書き込み用ストリーム
+                final FileOutputStream fileOutput = new FileOutputStream(filePath);
+                final DataOutputStream dataOut = new DataOutputStream(fileOutput);
+                // 読み込みデータ単位
+                final byte[] buffer = new byte[4096];
+                // 読み込んだデータを一時的に格納しておく変数
+                int readByte = 0;
 
-            URL url = new URL(urlString);
-            String fileName = getFilenameFromURL(url);
-            Log.d(TAG, fileName);
-            URLConnection conn = url.openConnection();
-
-            HttpURLConnection httpConn = (HttpURLConnection)conn;
-            httpConn.setAllowUserInteraction(false);
-            httpConn.setInstanceFollowRedirects(true);
-            httpConn.setRequestMethod("GET");
-            httpConn.connect();
-            int response = httpConn.getResponseCode();
-
-            // Check Response
-            if(response != HttpURLConnection.HTTP_OK){
-                throw new HttpException();
-            }
-            int contentLength = httpConn.getContentLength();
-
-            InputStream in = httpConn.getInputStream();
-
-            FileOutputStream outStream
-                    = openFileOutput(fileName, MODE_PRIVATE);
-
-            DataInputStream dataInStream = new DataInputStream(in);
-            DataOutputStream dataOutStream
-                    = new DataOutputStream(
-                    new BufferedOutputStream(outStream));
-
-            // Read Data
-            byte[] b= new byte[4096];
-            int readByte = 0, totalByte = 0;
-
-            while(-1 != (readByte = dataInStream.read(b))){
-                dataOutStream.write(b, 0, readByte);
-                totalByte += readByte;
-                sendProgressBroadcast(
-                        contentLength,
-                        totalByte,
-                        fileName);
+                // ファイルを読み込む
+                while((readByte = dataInput.read(buffer)) != -1) {
+                    dataOut.write(buffer, 0, readByte);
+                }
+                // 各ストリームを閉じる
+                dataInput.close();
+                fileOutput.close();
+                dataInput.close();
+                input.close();
+                // 処理成功
+                return true;
             }
 
-            dataInStream.close();
-            dataOutStream.close();
-
-            if(contentLength < 0){
-                sendProgressBroadcast(
-                        totalByte,
-                        totalByte,
-                        fileName);
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } finally {
+            if (con != null) {
+                // コネクションを切断
+                con.disconnect();
             }
-
-        } catch (IOException e) {
-            Log.d(TAG, "IOException");
-        } catch (HttpException e) {
-            Log.d(TAG, "HttpException");
         }
-    }
-
-    protected void sendProgressBroadcast(
-            int contentLength,
-            int totalByte,
-            String filename){
-        Intent broadcastIntent = new Intent();
-        int completePercent = contentLength < 0 ?
-                -1 : ((totalByte*1000)/(contentLength*10));
-        Log.d(TAG, "completePercent = " + completePercent);
-        Log.d(TAG, "totalByte = " + totalByte);
-        Log.d(TAG, "fileName = " + filename);
-
-        broadcastIntent.putExtra("completePercent", completePercent);
-        broadcastIntent.putExtra("totalByte", totalByte);
-        broadcastIntent.putExtra("filename", filename);
-        broadcastIntent.setAction("DOWNLOAD_PROGRESS_ACTION");
-        getBaseContext().sendBroadcast(broadcastIntent);
-    }
-
-    protected String getFilenameFromURL(URL url){
-        String[] p = url.getFile().split("/");
-        String s = p[p.length-1];
-        if(s.indexOf("?") > -1){
-            return s.substring(0, s.indexOf("?"));
-        }
-        return s;
-    }
-
-    private class HttpException extends Throwable {
+        return false;
     }
 }
